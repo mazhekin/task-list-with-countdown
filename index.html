@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Список задач с таймерами обратного отсчета</title>
+    <link rel="stylesheet" href="vendors/bootstrap.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav class="navbar navbar-default navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Список задач с таймерами обратного отсчета</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid" ng-controller="MyController as vm">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Создать новую задачу</h4>
+            <form ng-submit="vm.addNewTask(newTaskForm)" name="newTaskForm" novalidate>
+                <div class="form-group" ng-class="{ 'has-error' : newTaskForm.newTaskName.$invalid }">
+                    <label>Заголовок</label>
+                    <input type="text" name="newTaskName" class="form-control" ng-model="vm.newTask.name" required>
+                    <p ng-show="newTaskForm.newTaskName.$invalid && !newTaskForm.$pristine" class="help-block">
+                        Заголовок - обязательное поле.
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea class="form-control" rows="5" ng-model="vm.newTask.description"></textarea>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : newTaskForm.newTaskFinishDate.$invalid }">
+                    <label>Дата окончания</label>
+                    <input type="text" name="newTaskFinishDate" placeholder="dd/mm/yyyy" class="form-control"
+                           ng-model="vm.newTask.finishDate" required
+                           ng-pattern="/(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d/">
+                    <p ng-show="newTaskForm.newTaskName.$invalid && !newTaskForm.$pristine" class="help-block">
+                        Дата окончания - обязательное поле.
+                    </p>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : newTaskForm.newTaskFinishTime.$invalid }">
+                    <label>Время окончания</label>
+                    <input type="text" name="newTaskFinishTime" placeholder="hh:mm" class="form-control"
+                           ng-model="vm.newTask.finishTime" required
+                            ng-pattern="/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/">
+                    <p ng-show="newTaskForm.newTaskFinishTime.$invalid && !newTaskForm.$pristine" class="help-block">
+                        Время окончания - обязательное поле.
+                    </p>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h4>Список задач</h4>
+            <div class="bg-info row task-item" ng-repeat="task in vm.tasks">
+                <div class="col-xs-2">
+                    <input type="text" class="form-control" ng-class="{ 'overdue': task.overdue }" disabled ng-value="task.timeLeft">
+                </div>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" disabled ng-value="task.name">
+                </div>
+                <div class="col-xs-2">
+                    <input type="text" class="form-control like-btn" disabled value="Подробнее" title="{{task.description}}">
+                </div>
+                <div class="col-xs-2">
+                    <input type="text" class="form-control like-btn" readonly value="+ 10 min" ng-click="vm.addMinutes(task, 10)">
+                </div>
+                <div class="col-xs-1">
+                    <button class="btn" ng-click="vm.deleteTask(task)">X</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--vendors-->
+<script src="vendors/angular.js"></script>
+<script src="vendors/ngStorage.js"></script>
+
+<!--scripts-->
+<script src="app.module.js"></script>
+<script src="my-controller.js"></script>
+
+<script src="widgets/myProgress.js"></script>
+
+</body>
+</html>

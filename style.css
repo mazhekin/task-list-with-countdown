@@ -1,0 +1,21 @@
+.task-item {
+    padding: 3px;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 2px;
+}
+
+.task-item div, .task-item input {
+    padding-left: 1px;
+    padding-right: 1px;
+    font-weight: bold;
+}
+
+.task-item .like-btn {
+    text-align: center;
+    cursor: pointer;
+}
+
+.overdue {
+    color: red;
+}
